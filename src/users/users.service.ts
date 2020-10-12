@@ -9,25 +9,7 @@ import { User } from './user.entity';
 export class UsersService {
     private users: any[];
 
-    constructor(@InjectRepository(User) private userRepository: Repository<User>) {
-        this.users = [
-            {
-                userId: 1,
-                email: 'john',
-                password: 'changeme',
-            },
-            {
-                userId: 2,
-                email: 'chris',
-                password: 'secret',
-            },
-            {
-                userId: 3,
-                email: 'maria',
-                password: 'guess',
-            },
-        ];
-    }
+    constructor(@InjectRepository(User) private userRepository: Repository<User>) { }
 
     async findOne(email: string): Promise<User | undefined> {
         this.users = await this.getAllUsers();

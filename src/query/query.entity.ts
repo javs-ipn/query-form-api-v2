@@ -18,8 +18,8 @@ export class Query {
     @Column({ name: 'db_id', type: 'int', nullable: false, comment: 'BD id' })
     public dbId: number;
 
-    @Column({ name: 'user_id', type: 'int', nullable: false, comment: 'User id' })
-    public userId: number;
+    @Column({ name: 'user_name', type: 'varchar', nullable: false, comment: 'User id' })
+    public userName: string;
 
     @Column({ name: 'status_id', type: 'int', nullable: false, comment: 'Status id' })
     public statusId: number;
