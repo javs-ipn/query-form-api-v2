@@ -15,9 +15,9 @@ export class DB {
     @Column({ name: 'user_name', type: 'varchar', comment: 'User name' })
     public userName: string;
 
-    @Column({ name: 'private_ip', type: 'int', nullable: false, comment: 'Private ip' })
-    public privateIp: number;
+    @Column({ name: 'private_ip', type: 'varchar', nullable: false, comment: 'Private ip' })
+    public privateIp: string;
 
-    @Column({ name: 'password', type: 'int', nullable: false, comment: 'Password' })
-    public password: number;
+    @Column({ name: 'password', type: 'varchar', nullable: false, comment: 'Password' })
+    public password: string;
 }

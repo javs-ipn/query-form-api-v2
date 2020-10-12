@@ -18,9 +18,9 @@ export class User {
     @Column({ name: 'password', type: 'varchar', comment: 'User password' })
     public password: string;
 
-    @Column({ name: 'role_id', type: 'varchar', comment: 'User role' })
-    public roleId: string;
+    @Column({ name: 'role_id', type: 'int', comment: 'User role' })
+    public roleId: number;
 
-    @Column({ name: 'status_id', type: 'varchar', comment: 'Status id' })
-    public statusId: string;
+    @Column({ name: 'status_id', type: 'int', comment: 'Status id' })
+    public statusId: number;
 }

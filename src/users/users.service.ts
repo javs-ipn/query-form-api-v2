@@ -7,30 +7,31 @@ import { User } from './user.entity';
 
 @Service()
 export class UsersService {
-    private readonly users: User[];
+    private users: any[];
 
     constructor(@InjectRepository(User) private userRepository: Repository<User>) {
         this.users = [
             {
                 userId: 1,
-                username: 'john',
+                email: 'john',
                 password: 'changeme',
             },
             {
                 userId: 2,
-                username: 'chris',
+                email: 'chris',
                 password: 'secret',
             },
             {
                 userId: 3,
-                username: 'maria',
+                email: 'maria',
                 password: 'guess',
             },
         ];
     }
 
-    async findOne(username: string): Promise<User | undefined> {
-        return this.users.find(user => user.username === username);
+    async findOne(email: string): Promise<User | undefined> {
+        this.users = await this.getAllUsers();
+        return this.users.find(user => user.email === email);
     }
 
     public async createUser(user: any): Promise<User> {
@@ -39,5 +40,13 @@ export class UsersService {
             throw new GenericNotFoundError(userToBeSaved.user, undefined);
         }
         return userToBeSaved;
+    }
+
+    public async getAllUsers(): Promise<User[]> {
+        const allUsers = await this.userRepository.find({});
+        if (!allUsers) {
+            throw new GenericNotFoundError(allUsers + '', undefined);
+        }
+        return allUsers;
     }
 }
