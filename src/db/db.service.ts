@@ -17,4 +17,12 @@ export class DBService {
         }
         return dbs;
     }
+
+    public async getDbById(id: any): Promise<DB[]> {
+        const db = await this.dbRepository.find({ where: { id: id }});;
+        if (!db) {
+        throw new GenericNotFoundError(db + '', undefined);
+        }
+        return db;
+    }
 }
