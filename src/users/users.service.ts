@@ -17,6 +17,7 @@ export class UsersService {
     }
 
     public async createUser(user: any): Promise<User> {
+        console.log("user", user);
         const userToBeSaved = await this.userRepository.save(user);
         if (!userToBeSaved) {
             throw new GenericNotFoundError(userToBeSaved.user, undefined);

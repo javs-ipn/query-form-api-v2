@@ -60,10 +60,9 @@ export class QueryService {
     public async executeQuery(queryRequest: any): Promise<any> {
         return new Promise((resolve, reject) => {
             const conn = mysql.createConnection({
-                host: 'localhost',
-                user: 'root',
-                password: '',
-                database: 'query_form',
+                host: queryRequest.host,
+                user: queryRequest.userName,
+                password: queryRequest.pass,
             });
             conn.query(queryRequest.query, (error, rows, fields) => {
                 if (error) {
