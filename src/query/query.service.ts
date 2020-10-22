@@ -9,6 +9,7 @@ import { DBService } from 'src/db/db.service';
 @Service()
 export class QueryService {
     public queryError: boolean;
+    public typeError: string;
 
     constructor(
         @InjectRepository(Query) private queryRepository: Repository<Query>,
@@ -51,11 +52,12 @@ export class QueryService {
         };
         await this.executeQuery(queryRequest);
         if (this.queryError) {
-            return false;
+            return { error: this.queryError, typeError: this.typeError };
         }
         await this.queryAccepted(query);
-        return true;
+        return { error: this.queryError };
     }
+
 
     public async executeQuery(queryRequest: any): Promise<any> {
         return new Promise((resolve, reject) => {
@@ -64,10 +66,22 @@ export class QueryService {
                 user: queryRequest.userName,
                 password: queryRequest.pass,
             });
+
             conn.query(queryRequest.query, (error, rows, fields) => {
                 if (error) {
+                    var err = error.code;
+                    console.log("error: " + err);
                     this.queryError = true;
-                } else {
+                    if (err == 'ER_PARSE_ERROR') {
+                        this.typeError = 'SYNTAX_ERROR';
+                        console.log("error con la query: " + err);
+                    }
+                    else if (err == 'ER_ACCESS_DENIED_ERROR') {
+                        this.typeError = 'CONN_ERROR';
+                        console.log("error con la conexion: " + err);
+                    }
+                }
+                else {
                     this.queryError = false;
                 }
                 resolve();
@@ -86,7 +100,7 @@ export class QueryService {
     }
 
     public async userPendingQueries(user: any): Promise<Query[]> {
-        const pendingQueries = await this.queryRepository.find({ where: { userName: user.email }});
+        const pendingQueries = await this.queryRepository.find({ where: { userName: user.email } });
         if (!pendingQueries) {
             throw new GenericNotFoundError(pendingQueries + '', undefined);
         }
